@@ -1,0 +1,72 @@
+=====================
+FusionX v1.7 - Eclipse
+=====================
+  • Upstream to Latest LTS 4.19.331 
+  • Switched to neutron clang + full lto
+  • Dropped affined kthreads and IRQs to specific CPUs
+  • Debloated anykernel3
+  • Treewide: nuke more useless logs
+  • Upstream and optimized alarm timer
+  • Restrict GCAM to run in the background
+  • Reverted  to stock gpu freq (670-305mhz) 
+  • Scheduler improvements (slightly reduce overhead)
+  • Updated kernel/locking
+  • Optimized dentry caching and checkpoint thread priority
+  • lz4: Updated to v1.10.0 with ARM64 optimizations and Clang support
+  • Optimized vsync handling and dropped debug reads
+  • Various fixes and optimizations (WQ_HIGHPRI, PHY handling, LPM)
+  • Convert waits to TASK_IDLE for efficiency
+  • Added support for renaming on sideload
+  • Synced changes from n0k
+  • Nuked TEO
+  • Enabled Stack protector
+  • Fixed fingerprint sensor delay
+  • Fixed IR sensor not working on newer LOS-based ROMs
+  • Lib: minor fix and improvement
+  • Memory management improvement
+  • Re-work Thermal and RCU changes from 1.6 in a better way
+  • Reverted power efficient workqeues
+  • Reverted some thermal related changes
+  • Reverted some scheduler changes
+  • Reverted  bunch of useless stuffs from 1.6 stable and beta builds
+
+=====================
+FusionX v1.6-r
+=====================
+  • Synced N0k Changes
+  • Upstream to 4.19.329
+  • Merge latest google asb tag
+  • Improved console performance, scheduler improvement, and IRQ/thread placement.
+  • Implemented a custom uname override (4.19.157-perf+ for gms compatibility).
+  • Tree Wide: Nuked some unnecessary drivers,configs and useless commits.
+  • Introduced TEO.
+  • Improved wakelock handling and thermal management.
+  • Relax CPU latency requirements to save power
+  • Optimized KGSL: fixed race conditions, improved scheduling.
+  • Increased GPU processing limit and storage request size.
+  • OC & UV GPU 683-150mHz
+  • Enhanced CPU power management, faster scaling, and early governor registration.
+  • Improved how the kernel handling zram and tweak memory pressure for 6gb RAM devices
+  • Added tri-cluster API for cpu efficiency.
+  • Updated jitterentropy, security patches.
+  • Fixed Roblox crashes, reverted potential kernel panic commits.
+  • Nuked all related to hdmi and ext display.
+  • Disable unrelated errata target.
+  • Cleaned up unused MTK configs.
+  • Re-Implemented and upstreamed WireGuard.
+  • REVERT Battery: allow write any learned capacity (Useless)
+
+=====================
+FusionX v1.5
+=====================
+  • Overridden Xiaomi's thermal profile to dynamic for better thermal control.
+  • Optimized thermal driver by removing debug features.
+  • Fix memory leaks.
+  • Faked lineage packages in proc filesystem.
+  • Lowered alignment on ARM for better performance.
+  • Disabled coresight in device tree configurations for kona.
+  • Tree wide: debloated kernel source (reduced kernel size)
+  • Idle drain should be better now
+  • Removed shamiko support for susfs (susfs may cause /data leak which is caused by shamiko)
+  • A lot of changes and improvements (I'm lazy to write it all)
+  • Thanks to @sk113r for helping
