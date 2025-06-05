@@ -1,4 +1,32 @@
 =====================
+FusionX v1.8 - Oblivion
+=====================
+• Upstream to 4.19.322 (Backported by @KaminariKo from 5.4.293 stable release)
+• Completely removed WALT for a cleaner scheduling experience
+• Updated and backported SUSFS 1.5.7 from kernel 6.1
+• Updated KernelSU-Next to version 1.0.7
+• Introduced Linux Random Number Generator (LRNG)
+• Inline mainline scheduler fixes from (Fake dreamer kernel)
+• Backported and inlined F2FS fixes from upstream
+• Backported display driver improvements
+• Synced stop_machine and compaction fixes with mainline
+• Applied core kernel subsystem fixes from mainline
+• Tweaked block subsystem for better performance
+• Optimized timer handling for more efficient task scheduling
+• Updated ZRAM implementation in sync with n0kernel
+• Small Wi-Fi driver improvements
+• Minor CNSS tweaks
+• Fixed USB storage path with uninitialized values
+• Disabled unnecessary debug logging to reduce log spam
+• Reverted some commits causing instability
+• Fixed crash when using Yono SBI with Zygisk module
+• defconfig: Disabled unused features such as DGC, sound, and panic-on-SSR
+• Enable CPU input boost
+• Added installation support for Manual/Volume button method
+• Treewide: source cleanup
+• More Minor improvements
+
+=====================
 FusionX v1.7 - Eclipse
 =====================
   • Upstream to Latest LTS 4.19.331 
