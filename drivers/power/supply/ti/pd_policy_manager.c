@@ -1,5 +1,5 @@
 
-#define pr_fmt(fmt)	"[USBPD-PM]: %s: " fmt, __func__
+#define pr_fmt(fmt)
 
 #include <linux/module.h>
 #include <linux/kernel.h>
@@ -202,14 +202,12 @@ static int pd_bq_soft_taper_by_main_charger_charge_type(struct usbpd_pm *pdpm)
 	rc = pd_get_batt_step_vfloat_index(pdpm, &step_index);
 	if (rc >=0 && step_index == STEP_VFLOAT_INDEX_MAX) {
 		rc = pd_get_batt_charge_type(pdpm, &curr_charge_type);
-		if (rc >= 0 &&
-		    curr_charge_type == POWER_SUPPLY_CHARGE_TYPE_TAPER) {
-			effective_fcc_bq_taper =
-				usbpd_get_effective_fcc_val(pdpm);
-			effective_fcc_bq_taper -=
-				BQ_SOFT_TAPER_DECREASE_STEP_MA;
+		if (rc >=0
+				&& curr_charge_type == POWER_SUPPLY_CHARGE_TYPE_TAPER) {
+			effective_fcc_bq_taper = usbpd_get_effective_fcc_val(pdpm);
+			effective_fcc_bq_taper -= BQ_SOFT_TAPER_DECREASE_STEP_MA;
 			pr_debug("BS voltage is reached to maxium vfloat, decrease fcc: %d mA\n",
-			       effective_fcc_bq_taper);
+						effective_fcc_bq_taper);
 			if (pdpm->fcc_votable)
 				vote(pdpm->fcc_votable, BQ_TAPER_FCC_VOTER,
 					true, effective_fcc_bq_taper * 1000);
@@ -372,32 +370,6 @@ static bool pd_get_bms_chip_ok(struct usbpd_pm *pdpm)
 				POWER_SUPPLY_PROP_CHIP_OK, &pval);
 	if (rc < 0) {
 		pr_info("Couldn't get chip ok:%d\n", rc);
-		return false;
-	}
-
-	pr_debug("pval.intval: %d\n", pval.intval);
-
-	if (pval.intval == 1)
-		return true;
-	else
-		return false;
-}
-
-/* get bq27z561 chip ok*/
-static bool pd_get_bms_chip_ok(struct usbpd_pm *pdpm)
-{
-	union power_supply_propval pval = {
-		0,
-	};
-	int rc;
-
-	if (!pdpm->bms_psy)
-		return false;
-
-	rc = power_supply_get_property(pdpm->bms_psy, POWER_SUPPLY_PROP_CHIP_OK,
-				       &pval);
-	if (rc < 0) {
-		pr_debug("Couldn't get chip ok:%d\n", rc);
 		return false;
 	}
 
@@ -948,12 +920,10 @@ static int usbpd_pm_fc2_charge_algo(struct usbpd_pm *pdpm)
 		if (pdpm->cp.bms_vbat_mv > pdpm->cell_vol_max_threshold_mv) {
 			if (pdpm->over_cell_vol_max_count++ > CELL_VOLTAGE_MAX_COUNT_MAX) {
 				pdpm->over_cell_vol_max_count = 0;
-				effective_fcc_taper =
-					usbpd_get_effective_fcc_val(pdpm);
-				effective_fcc_taper -=
-					BQ_TAPER_DECREASE_STEP_MA;
+				effective_fcc_taper = usbpd_get_effective_fcc_val(pdpm);
+				effective_fcc_taper -= BQ_TAPER_DECREASE_STEP_MA;
 				pr_debug("vcell is reached to max threshold, decrease fcc: %d mA\n",
-				       effective_fcc_taper);
+							effective_fcc_taper);
 				if (pdpm->fcc_votable) {
 					if (effective_fcc_taper >= 2000)
 						vote(pdpm->fcc_votable, BQ_TAPER_FCC_VOTER,
@@ -1029,8 +999,7 @@ static int usbpd_pm_fc2_charge_algo(struct usbpd_pm *pdpm)
 			ibus_limit = curr_ibus_limit - 100;
 			effective_fcc_taper = usbpd_get_effective_fcc_val(pdpm);
 			effective_fcc_taper -= BQ_TAPER_DECREASE_STEP_MA;
-			pr_debug("bq set taper fcc to : %d mA\n",
-			       effective_fcc_taper);
+			pr_debug("bq set taper fcc to : %d mA\n", effective_fcc_taper);
 			if (pdpm->fcc_votable) {
 				if (effective_fcc_taper >= 2000)
 					vote(pdpm->fcc_votable, BQ_TAPER_FCC_VOTER,
@@ -1045,8 +1014,7 @@ static int usbpd_pm_fc2_charge_algo(struct usbpd_pm *pdpm)
 			ibus_limit = curr_ibus_limit - 100;
 			effective_fcc_taper = usbpd_get_effective_fcc_val(pdpm);
 			effective_fcc_taper -= BQ_TAPER_DECREASE_STEP_MA;
-			pr_debug("bq set taper fcc to: %d mA\n",
-			       effective_fcc_taper);
+			pr_debug("bq set taper fcc to: %d mA\n", effective_fcc_taper);
 			if (pdpm->fcc_votable) {
 				if (effective_fcc_taper >= 2000)
 					vote(pdpm->fcc_votable, BQ_TAPER_FCC_VOTER,
@@ -1688,15 +1656,7 @@ static void usb_psy_change_work(struct work_struct *work)
 	int ret = 0;
 
 	ret = power_supply_get_property(pdpm->usb_psy,
-					POWER_SUPPLY_PROP_PRESENT, &val);
-	if (ret) {
-		pr_debug("Failed to read usb preset!\n");
-		goto out;
-	}
-	usb_present = val.intval;
-
-	ret = power_supply_get_property(
-		pdpm->usb_psy, POWER_SUPPLY_PROP_TYPEC_POWER_ROLE, &val);
+			POWER_SUPPLY_PROP_TYPEC_POWER_ROLE, &val);
 	if (ret) {
 		pr_debug("Failed to read typec power role\n");
 		goto out;
